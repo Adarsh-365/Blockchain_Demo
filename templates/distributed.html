@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1> Peer1 </h1>
+<div class="blockchain-container1">
+    <!-- Row 1 -->
+    <div class="blockchain-row">
+        {% for block in blocks1 %}
+        <div id="block{{ block.id }}" class="block{{ block.id }}">
+            {% include "block_base.html" with block_id=block.id nonce=block.nonce data=block.data prev_hashed_value=block.prev_hashed_value hashed_value=block.hashed_value %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Row 2 -->
+</div>
+<h1> Peer2 </h1>
+    <div class="blockchain-container1">
+    <div class="blockchain-row">
+        {% for block in blocks2 %}
+        <div id="block{{ block.id }}" class="block{{ block.id }}">
+            {% include "block_base.html" with block_id=block.id nonce=block.nonce data=block.data prev_hashed_value=block.prev_hashed_value hashed_value=block.hashed_value %}
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+<h1> Peer3 </h1>
+<div class="blockchain-container1">
+    <!-- Row 3 -->
+    <div class="blockchain-row">
+        {% for block in blocks3 %}
+        <div id="block{{ block.id }}" class="block{{ block.id }}">
+            {% include "block_base.html" with block_id=block.id nonce=block.nonce data=block.data prev_hashed_value=block.prev_hashed_value hashed_value=block.hashed_value %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+   
+        .blockred {
+            background-color: rgb(228, 148, 136);
+        }
+        .blockgreen {
+            background-color: rgb(137, 228, 136);
+        }
+    
+       
+    
+        .blockchain-row {
+            display: flex; /* Align blocks horizontally in each row */
+            flex-wrap: nowrap; /* Prevent blocks from wrapping */
+            overflow-x: auto; /* Enable horizontal scrolling for each row */
+            max-width: 100%; /* Limit the row width to the container's width */
+            scrollbar-width: thin; /* Use thin scrollbar for Firefox */
+            scrollbar-color: #888 #f9f9f9; /* Custom scrollbar colors for Firefox */
+        }
+    
+        .blockchain-row::-webkit-scrollbar {
+            height: 8px; /* Height of the scrollbar */
+        }
+    
+        .blockchain-row::-webkit-scrollbar-thumb {
+            background-color: #888; /* Scrollbar thumb color */
+            border-radius: 4px; /* Rounded corners for the thumb */
+        }
+    
+        .blockchain-row::-webkit-scrollbar-thumb:hover {
+            background-color: #555; /* Darker color on hover */
+        }
+    
+        .blockchain-row .block {
+            flex: 0 0 300px; /* Fix the block width to 300px */
+            height: auto; /* Allow height to adjust based on content */
+            margin-right: 10px; /* Add spacing between blocks */
+            border: 1px solid #ccc; /* Optional: Add border to each block */
+            background-color: #fff; /* Optional: Background color for blocks */
+            padding: 10px; /* Optional: Padding inside each block */
+            box-sizing: border-box; /* Include padding and border in the width */
+        }
+    </style>
+    
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    
+
+        const blocks = [1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15]; // List of block IDs
+        
+        blocks.forEach((blockId) => {
+            const dataInput = document.getElementById(`data${blockId}`);
+            const nonceInput = document.getElementById(`nonce${blockId}`);
+            const hashField = document.getElementById(`hash${blockId}`);
+            const mineButton = document.getElementById(`mineButton${blockId}`);
+    
+            // Event listeners for inputs
+            dataInput.addEventListener('input', () => handleDataInput(blockId));
+            nonceInput.addEventListener('input', () => handleDataInput(blockId));
+    
+            // Event listener for the mine button
+            mineButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                handleDataInput(blockId, 1);
+            });
+        });
+    });
+
+async function handleDataInput(blockId, mine = 0) {
+    
+
+   
+          
+
+    const data = document.getElementById(`data${blockId}`).value;
+    const nonce = document.getElementById(`nonce${blockId}`).value;
+    const nonceid = document.getElementById(`nonce${blockId}`);
+   
+    const prev_hashed_value = document.getElementById(`prevHash${blockId}`).value;
+ 
+    const id_list = [];
+    const nonce_list = [];
+    const data_list = [];
+    const prevhash_list = [];
+
+
+    const idfeild_list = []
+    const PrevhashField_list = [];
+    const noncefeild_list = [];
+    const hashFieldlist = [];
+    const id_be_list = [1,2,3,4,5,1,2,3,4,5,1,2,3,4,5];
+    for (let i = 1; i < 16; i++) {
+       
+        const temp = document.getElementById(`nonce${i}`).value;
+        const id1 = document.getElementById(`id${i}`).value;
+
+        idfeild_list.push(document.getElementById(`id${i}`));
+        id_list.push(id1);
+        nonce_list.push(temp);
+        const temp1 = document.getElementById(`data${i}`).value;
+        data_list.push(temp1);
+        const temp3 = document.getElementById(`prevHash${i}`).value;
+        prevhash_list.push(temp3);
+
+
+        
+        hashFieldlist.push(document.getElementById(`hash${i}`));
+        noncefeild_list.push( document.getElementById(`nonce${i}`));
+        PrevhashField_list.push( document.getElementById(`prevHash${i}`));
+       
+    }
+        try {
+            const response = await fetch('/distributed/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                //{'hashed_value_list': hashed_value_list,"prevhash_list_new":prevhash_list_new,'nonce_list':nonce_list}, status=200)
+           
+                body: JSON.stringify({ id_be_list, data_list, nonce_list,prevhash_list, mine,blockId }),
+            });
+    
+            if (response.ok) {
+                const result = await response.json();
+                
+               
+              
+                for (let i = 0; i < 16; i++) {
+                    hashFieldlist[i].value = result.hashed_value_list[i];
+                    const hasht = result.hashed_value_list[i];
+                    
+                    const div = document.getElementById("block" + (i+1)); // Use i directly, not str(i)
+                
+                    if (hasht.substring(0, 4) == "0000") {
+                        div.classList.remove("blockred");
+                        div.classList.add("blockgreen"); // Concatenate "block" and "green"
+                       
+                        //console.log("green");
+                    } else {
+                       // console.log("red");
+                        div.classList.remove("blockgreen");
+                        div.classList.add("blockred"); // Concatenate "block" and "red"
+                    }
+                     
+                    idfeild_list[i].value = id_be_list[i];
+                    if(i==5 || i==10){
+                        
+                        PrevhashField_list[i].value ="0000000000000000000000000000000000000000000000000000000000000000";
+                        noncefeild_list[i].value = result.nonce_list[i];
+                    }else{
+                    PrevhashField_list[i].value = result.prevhash_list_new[i];
+                    noncefeild_list[i].value = result.nonce_list[i];
+                }
+                   
+                }
+    
+                        
+    
+            } else {
+                hashField.value = 'Error generating hash';
+            }
+        } catch (error) {
+            hashFieldlist.value = 'Error generating hash';
+        }
+    
+    
+    
+
+};
+window.onload = function () {
+    
+    // Call your custom function here
+    handleDataInput(1, 1);
+    
+    };
+    
+</script>
+
+{% endblock %}
+    

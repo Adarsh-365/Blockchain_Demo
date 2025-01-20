@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="portfolio-container">
+    <div class="header">
+        <h1>Hello !!!</h1>
+        <h2>I am Adarsh Tayde,</h2>
+        <div class="contact-info">
+            <span class="location">NIT Warangal</span>
+            <span class="email">adarsthayde9011@gmail.com</span>
+            <span class="phone">7378693514</span>
+        </div>
+    </div>
+    {% load static%}
+    <div class="about-me">
+        <p>Hey there! I'm a Software Developer with 2 years of experience and a pursuing Master's degree in Computer Science, specializing in Information Security. Skilled in languages like Python, C++, and Java, I am a programming enthusiast with an interest in competitive coding 🏋️. Exploring new technologies fascinates me 🧭.</p>
+    </div>
+
+    <div class="profile">
+        <div class="profile-picture">
+            <img src="{% static 'Images/dp.jpg' %}" alt="Adarsh Tayde" />
+        </div>
+
+        <div class="bio">
+            <h3>Software Developer</h3>
+            <p>"I am a Software Developer with expertise in software development, web development, cryptography, and programming. I specialize in Python development and have worked on various projects involving technology solutions. I am constantly learning and exploring new technologies to expand my skill set.</p>
+        </div>
+    </div>
+
+    <div class="personal-info">
+        <ul>
+            <li><strong>Birthday:</strong> Feb 2000</li>
+            <li><strong>Age:</strong> 25</li>
+            <li><strong>Degree:</strong> M.Tech</li>
+            <li><strong>Portfolio:</strong> <a href="http://adarshtayde.com" target="_blank">adarshtayde.com</a></li>
+            <li><strong>Location:</strong> Navi Mumbai</li>
+            <li><strong>Email:</strong> <a href="mailto:adarsthayde9011@gmail.com">adarsthayde9011@gmail.com</a></li>
+            <li><strong>GitHub:</strong> <a href="https://www.github.com/adarsh-365" target="_blank">GitHub</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    .portfolio-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header h1 {
+        font-size: 2.5em;
+        color: #2980b9;
+        text-align: center;
+    }
+
+    .header h2 {
+        font-size: 2em;
+        color: #34495e;
+        text-align: center;
+        margin-top: -10px;
+    }
+
+    .contact-info {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 15px;
+    }
+
+    .contact-info span {
+        padding: 10px;
+        background-color: #3498db;
+        color: white;
+        border-radius: 5px;
+        font-size: 1.1em;
+    }
+
+    .about-me p {
+        font-size: 1.2em;
+        line-height: 1.6;
+        text-align: center;
+        color: #7f8c8d;
+        margin-top: 20px;
+    }
+
+    .profile {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        margin-top: 40px;
+    }
+
+    /* Position the image to the left and the content to the right */
+    .profile .profile-picture {
+        flex: 0 0 auto; /* Prevent shrinking */
+    }
+
+    .profile .bio {
+        flex: 1; /* Allow the bio to take up remaining space */
+        color: #7f8c8d;
+    }
+
+    .profile-picture img {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border: 5px solid #3498db;
+        margin-right: 20px; /* Add space between the image and text */
+    }
+
+    .bio h3 {
+        font-size: 2em;
+        color: #2980b9;
+    }
+
+    .personal-info {
+        margin-top: 40px;
+    }
+
+    .personal-info ul {
+        list-style-type: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Creates two equal columns */
+        gap: 20px; /* Space between columns */
+    }
+    
+    .personal-info li {
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+
+    .personal-info a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    .personal-info a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock content %}
+

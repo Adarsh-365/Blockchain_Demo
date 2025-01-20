@@ -1,0 +1,262 @@
+html, body {
+    height: 100%;
+    margin: 0; /* Remove default margins */
+    display: flex;
+    flex-direction: column;
+  }
+
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+   
+}
+
+.blockchain_div1 {
+    margin-top: 50px;    /* Increased top margin */
+    margin-bottom: 50px; /* Increased bottom margin */
+    margin-left: 10%;
+    margin-right: 10%;
+    background: white;
+    padding-top: 30px;    /* Increased top padding */
+    padding-bottom: 30px; /* Increased bottom padding */
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: rgb(136, 173, 228);
+}
+
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.main-content {
+    flex: 1; /* Push the footer to the bottom when content is short */
+  }
+  
+.footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 200px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+
+/* Content styles */
+.content {
+    padding: 20px;
+    text-align: center;}
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+textarea[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+/* ################################# */
+.blockchain-form {
+    display: grid;
+    grid-template-columns: 1fr 15fr; /* Adjust the column widths as needed */
+    gap: 1rem; /* Adds spacing between the columns and rows */
+    max-width: 900px; /* Optional: restricts the form width */
+    
+    width: 500px;
+    margin: auto; /* Center the form on the page */
+  }
+  
+  .blockchain-form .form-group {
+    display: contents; /* Ensures that label and input are part of the grid structure */
+  }
+  
+  .blockchain-form label {
+    text-align: right; /* Align labels to the right */
+    padding-right: 0.5rem;
+  }
+  
+  .blockchain-form input,
+  .blockchain-form textarea,
+  .blockchain-form button {
+    width: 100%; /* Ensure inputs span the available space */
+    padding: 0.5rem;
+    border: 1px solid #ccc; /* Basic border style */
+    border-radius: 4px;
+    font-size: 0.7rem;
+  }
+  
+  .blockchain-form textarea {
+    resize: vertical; /* Allows resizing only vertically */
+  }
+  
+  .blockchain-form button {
+   /* Makes the button span both columns */
+   grid-column: 2; 
+    margin-top: 1rem;
+    background-color: #007bff; /* Bootstrap primary color */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .blockchain-form button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+  }
+  
+/* Styles for valid hash state */
+.greenclass {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+.redclass {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+/* Additional styling for textarea readonly */
+textarea[readonly] {
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+}
+
+textarea[readonly]:focus {
+    background-color: #f1f1f1;
+}
+
+/* Ensure form and inputs are responsive */
+@media (max-width: 768px) {
+    .form-group label {
+        font-size: 14px;
+    }
+
+    .form-control {
+        padding: 8px;
+    }
+
+    button.btn {
+        width: 100%;
+        font-size: 14px;
+    }
+}
+
+
+/* blockchain */
+
+/* Styling for the blockchain container */
+.blockchain-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    gap: 20px;
+}
+
+/* Scrollbar styling for horizontal scroll */
+.blockchain-container::-webkit-scrollbar {
+    height: 10px;
+}
+
+.blockchain-container::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 5px;
+}
+
+.blockchain-container::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+/* Individual block styles */
+.blockchain-container > * {
+    flex: 0 0 auto; /* Prevent the blocks from shrinking or growing */
+    width: 600px; /* Fixed width for each block */
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+}
+
+/* Ensure blocks are responsive */
+@media (max-width: 768px) {
+    .blockchain-container > * {
+        width: 250px; /* Reduce width for smaller screens */
+    }
+}
+
+
+
+/* distributed */
+
+
+/* Styling for the blockchain container */
+
+/* Styling for the blockchain container */
+.blockchain-container1 {
+    display: flex;
+    flex-direction: column; /* Arrange rows vertically */
+    gap: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* Individual rows */
+.blockchain-row {
+    display: flex;
+    flex-wrap: nowrap; /* Ensure blocks in each row are in a single line */
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 20px;
+}
+
+/* Scrollbar styling for horizontal scroll in rows */
+.blockchain-row::-webkit-scrollbar {
+    height: 10px;
+}
+
+.blockchain-row::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 5px;
+}
+
+.blockchain-row::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+/* Individual block styles */
+.blockchain-row > * {
+    flex: 0 0 auto; /* Prevent blocks from shrinking or growing */
+    width: 600px; /* Fixed width for each block */
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+}
+
+/* Ensure blocks are responsive */
+@media (max-width: 768px) {
+    .blockchain-row > * {
+        width: 250px; /* Reduce width for smaller screens */
+    }
+}

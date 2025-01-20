@@ -1,0 +1,87 @@
+{% extends "base2.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Public/Private Key Pair Generator</h1>
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- Key Type Selection -->
+        <label for="key_type">Key Type:</label>
+        <select id="key_type" name="key_type">
+            <option value="RSA">RSA</option>
+            <option value="DSA">DSA</option>
+            <option value="EC">Elliptic Curve (EC)</option>
+        </select>
+
+        <!-- Key Size Selection -->
+        <label for="key_size">Key Size (for RSA/DSA):</label>
+        <select id="key_size" name="key_size">
+            <option value="2048">2048</option>
+            <option value="3072">3072</option>
+            <option value="4096">4096</option>
+        </select>
+
+        <!-- Random Key Button -->
+        <button type="button" id="generate_random_key">Generate 78-Character Random Key</button>
+        
+        <!-- Private Key Input -->
+        <label for="private_key">Private Key:</label>
+        <textarea id="private_key" name="private_key" rows="5" placeholder="Enter your private key or generate one"></textarea>
+        
+        <!-- Public Key Output -->
+        <label for="public_key">Public Key:</label>
+        <textarea id="public_key" name="public_key" rows="5" readonly>{{ public_key }}</textarea>
+    </form>
+</div>
+
+<script>
+    // Function to generate a random 78-character key
+    function generateRandomKey() {
+        const characters = '0123456789';
+        let randomKey = '';
+        for (let i = 0; i < 78; i++) {
+            randomKey += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        document.getElementById('private_key').value = randomKey;
+    }
+
+    // Attach event listener to the button
+    document.getElementById('generate_random_key').addEventListener('click', generateRandomKey);
+
+    // Key generation functionality
+    document.getElementById('key_type').addEventListener('change', generateKeys);
+    document.getElementById('key_size').addEventListener('change', generateKeys);
+
+    async function generateKeys() {
+        const keyType = document.getElementById('key_type').value;
+        const keySize = document.getElementById('key_size').value;
+        const privateKeyField = document.getElementById('private_key');
+        const publicKeyField = document.getElementById('public_key');
+        const userPrivateKey = privateKeyField.value.trim();
+
+        try {
+            const response = await fetch('/generate_keys/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify({ key_type: keyType, key_size: keySize, user_private_key: userPrivateKey }),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                publicKeyField.value = result.public_key;
+                if (result.private_key) privateKeyField.value = result.private_key;
+            } else {
+                publicKeyField.value = 'Error generating keys';
+            }
+        } catch (error) {
+            publicKeyField.value = 'Error generating keys';
+        }
+    }
+</script>
+
+{% endblock content %}

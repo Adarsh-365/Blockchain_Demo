@@ -1,0 +1,53 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+    <div class="container">
+        <h1>SHA256</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="data">Data:</label>
+            <textarea id="data" name="data" rows="5" placeholder="Enter text to hash...">{{ data }}</textarea>
+            <label for="hash">Hashed Value:</label>
+            <textarea id="hash" name="hash" rows="5" readonly>{{ hashed_value }}</textarea>
+            
+        </form>
+    </div>
+
+
+
+    <script>
+        document.getElementById('data').addEventListener('input', async function () {
+            const data = this.value;
+            const hashField = document.getElementById('hash');
+
+            if (data.trim() !== '') {
+                try {
+                    const response = await fetch('/hash/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                        },
+                        body: JSON.stringify({ data }),
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        hashField.value = result.hashed_value;
+                    } else {
+                        hashField.value = 'Error generating hash';
+                    }
+                } catch (error) {
+                    hashField.value = 'Error generating hash';
+                }
+            } else {
+                hashField.value = '';
+            }
+        });
+    </script>
+
+    
+{% endblock content %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1> Blockchain Tokens </h1>
+
+<div class="blockchain-container1">
+    <div class="blockchain-row">
+        <!-- Dynamically include blocks -->
+        {% for block in blocks %}
+        <div id="block{{ block.block_id }}" class="block">
+            {% include "token_base.html" with  block_id=block.block_id  nonce=block.nonce transactions=block.transactions  prev_hash=block.prev_hash  hash=block.hash %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .blockchain-row {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        max-width: 100%;
+    }
+    .block {
+        flex: 0 0 300px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        background-color: #f9f9f9;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const blocks = [1,2,3]; // List of block IDs [1 to 15]
+
+        blocks.forEach((blockId) => {
+            const saveButton = document.getElementById(`saveButton${blockId}`);
+            const table = document.getElementById(`transactionTable${blockId}`);
+
+            // Event listener for the save button
+            saveButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                handleSaveTransactions(blockId, table);
+            });
+        });
+    });
+
+    async function handleSaveTransactions(blockId, table) {
+        const rows = table.querySelectorAll('tbody tr'); // Get all rows in the table body
+        const transactions = [];
+
+        // Extract transaction data from the table
+        rows.forEach((row) => {
+            const fromField = row.querySelector('.fromField').value;
+            const toField = row.querySelector('.toField').value;
+            const valueField = row.querySelector('.valueField').value;
+
+            transactions.push({
+                from: fromField,
+                to: toField,
+                value: valueField,
+            });
+        });
+
+        // Send updated transactions to the backend
+        try {
+            const response = await fetch('/tokens/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: JSON.stringify({ blockId, transactions }),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert(`Block ${blockId}: Transactions updated successfully!`);
+            } else {
+                alert(`Block ${blockId}: Failed to update transactions.`);
+            }
+        } catch (error) {
+            console.error(`Block ${blockId}: Error saving transactions.`, error);
+            alert(`Block ${blockId}: An error occurred while saving.`);
+        }
+    }
+</script>
+
+{% endblock %}

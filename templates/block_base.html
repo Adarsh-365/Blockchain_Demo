@@ -1,0 +1,37 @@
+{% block content %}
+<div class="blockchain_div">
+    
+    <form method="POST" id="blockForm{{ block_id }}" class="blockchain-form">
+        {% csrf_token %}
+        
+        <div class="form-group row">
+            <label for="id{{ block_id }}">BLOCK:</label>
+            <input type="number" id="id{{ block_id }}" name="id" value="{{ block_id }}" min="1" max="10000">
+        </div>
+        
+        <div class="form-group row">
+            <label for="nonce{{ block_id }}">Nonce:</label>
+            <input type="number" id="nonce{{ block_id }}" name="nonce" value="{{nonce}}" min="1" max="100000">
+        </div>
+        
+        <div class="form-group row">
+            <label for="data{{ block_id }}">Data:</label>
+            <textarea id="data{{ block_id }}" name="data" rows="3" placeholder="">{{ data }}</textarea>
+        </div>
+        
+        <div class="form-group row">
+            <label for="prevHash{{ block_id }}">Prev:</label>
+            <textarea style="overflow-x: auto; white-space: nowrap;" id="prevHash{{ block_id }}" name="prevHash" rows="2" placeholder="0000000000000000000000000000000000000000000000000000000000000000" readonly>{{ prev_hashed_value }}</textarea>
+        </div>
+        
+        <div class="form-group row">
+            <label for="hash{{ block_id }}">Hash:</label>
+            <textarea id="hash{{ block_id }}" name="hash" rows="1" readonly>{{ hashed_value }}</textarea>
+        </div>
+        
+        <div class="form-group row">
+            <button class="btn btn-primary" id="mineButton{{ block_id }}" type="button">Mine</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

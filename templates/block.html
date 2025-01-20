@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="content1" class="blockchain_div1">
+
+    <h1>BLOCK</h1>
+    <form method="POST" id="blockForm">
+        {% csrf_token %}
+        
+        <div class="form-group row">
+            <label class="col-sm-2 control-label" for="id">ID:</label>
+            <input type="number" class="form-control" id="id" name="id" value="1" min="1" max="10000">
+        </div>
+        
+        <div class="form-group row">
+            <label class="col-sm-2 control-label" for="nonce">Nonce:</label>
+            <input type="number" class="form-control" id="nonce" name="nonce" value="72608" min="1" max="100000">
+        </div>
+        
+        <div class="form-group row">
+            <label for="data">Data:</label>
+            <textarea id="data" name="data" rows="5" placeholder="Enter text to hash...">{{ data }}</textarea>
+        </div>
+        
+        <div class="form-group row">
+            <label for="hash">Hashed Value:</label>
+            <textarea id="hash" name="hash" rows="1" readonly>{{ hashed_value }}</textarea>
+        </div>
+        
+        <button class="btn btn-primary" id="mineButton" type="button">Mine</button>
+    </form>
+
+</div>
+
+<script>
+    // Helper function to toggle the CSS class based on hash value
+    function updateContentClass(isValidHash) {
+        const myDiv = document.getElementById('content1');
+        if (isValidHash) {
+            myDiv.classList.add('greenclass');
+            myDiv.classList.remove('redclass');
+        } else {
+            myDiv.classList.add('redclass');
+            myDiv.classList.remove('greenclass');
+        }
+    }
+
+    // Function to handle the input changes and fetch hash
+    async function handleDataInput(TEMP = 0) {
+        const data = document.getElementById('data').value;
+        const id = document.getElementById('id').value;
+        const nonce = document.getElementById('nonce').value;
+        const nonceid = document.getElementById('nonce');
+        const hashField = document.getElementById('hash');
+
+        // Only send a request if necessary
+        if (hashField.value === '' || hashField.value.substring(0, 4) === '0000') {
+            updateContentClass(true);
+        } else {
+            updateContentClass(false);
+        }
+
+        try {
+            const response = await fetch('/block/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: JSON.stringify({ data, id, nonce, Doactivity: TEMP === 1 ? 'Mine' : 'Nothing' }),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                hashField.value = result.hashed_value;
+                nonceid.value = result.nonce_val;
+                updateContentClass(hashField.value === '' || hashField.value.substring(0, 4) === '0000');
+            } else {
+                hashField.value = 'Error generating hash';
+            }
+        } catch (error) {
+            hashField.value = 'Error generating hash';
+        }
+    }
+
+    // Event listener for the form inputs
+    document.getElementById('data').addEventListener('input', () => handleDataInput());
+    document.getElementById('id').addEventListener('input', () => handleDataInput());
+    document.getElementById('nonce').addEventListener('input', () => handleDataInput());
+
+    // Event listener for the "Mine" button
+    document.getElementById('mineButton').addEventListener('click', (event) => {
+        event.preventDefault();
+        handleDataInput(1);
+    });
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+        handleDataInput();
+    });
+</script>
+
+{% endblock content %}

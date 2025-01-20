@@ -1,0 +1,55 @@
+<div class="block-container1">
+    <form method="POST" id="blockForm{{ block_id }}" class="blockchain-form">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="id{{ block_id }}">Block ID:</label>
+            <input type="number" id="id{{ block_id }}" name="id" value="{{ block_id }}" readonly>
+        </div>
+        
+        <div class="form-group">
+            <label for="nonce{{ block_id }}">Nonce:</label>
+            <input type="number" id="nonce{{ block_id }}" name="nonce" value="{{ nonce }}" min="1" max="100000">
+        </div>
+        
+        <div class="form-group">
+            <label for="transactions{{ block_id }}">Transactions:</label>
+            <table id="transactionsTable{{ block_id }}" class="transactions-table">
+                <thead>
+                    <tr>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Value</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tx in transactions %}
+                    <tr>
+                        <td><input type="text" name="from" value="{{ tx.from }}" class="form-control"></td>
+                        <td><input type="text" name="to" value="{{ tx.to }}" class="form-control"></td>
+                        <td><input type="number" name="value" value="{{ tx.value }}" class="form-control" step="0.01"></td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+        </div>
+        
+        
+        <div class="form-group">
+            <label for="prevHash{{ block_id }}">Previous Hash:</label>
+            <textarea id="prevHash{{ block_id }}" name="prevHash" rows="2" readonly>{{ prev_hash }}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="hash{{ block_id }}">Current Hash:</label>
+            <textarea id="hash{{ block_id }}" name="hash" rows="2" readonly>{{ hash }}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <button class="btn btn-primary" id="mineButton{{ block_id }}" type="button">Mine</button>
+        </div>
+    </form>
+</div>
